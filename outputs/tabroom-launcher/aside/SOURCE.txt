@@ -1,0 +1,1 @@
+Source: aside-browser-bridge, commit ec6ab786f2ff94a108b4f9fcfdfd6141c94aebf0, v0.2.0. Browser runtime, tool schemas, documentation and original asset provenance are vendored.

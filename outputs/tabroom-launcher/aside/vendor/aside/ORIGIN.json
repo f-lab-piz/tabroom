@@ -1,0 +1,26 @@
+{
+  "source": "Aside Daemon.app/Contents/MacOS/aside-daemon (mac-arm64)",
+  "sourceVersion": "1.26.1029.43",
+  "sourceBytes": 160999120,
+  "sourceSha256": "214e356fd38327e5cc22409f4da9c2916abcdc37d3d5610a06e58c4802a3416b",
+  "byteOffset": 103563370,
+  "bytes": 12886666,
+  "sha256": "426a0ebc0758aa69f0ac2c3d9cbb0f422eaedeaec463463ba9bd9d50dbf57792",
+  "recordedAt": "2026-10-28T17:21:34.060Z",
+  "extraction": "Original Node SEA main source and length-prefixed assets. No source transformations.",
+  "file": "daemon-original.mjs",
+  "assets": [
+    {
+      "file": "quickjs-emscripten-module.wasm",
+      "byteOffset": 116450090,
+      "bytes": 503134,
+      "sha256": "105c3bed22d457e43e3d1c3c1c6959fda62a8fe06f0fc8a985303c3a2be72232"
+    },
+    {
+      "file": "photon_rs_bg.wasm",
+      "byteOffset": 116953257,
+      "bytes": 1881634,
+      "sha256": "10468181565c56004c867f3a4af96f89a0ef5a63a72f2b5fb12c1f1992a3615c"
+    }
+  ]
+}

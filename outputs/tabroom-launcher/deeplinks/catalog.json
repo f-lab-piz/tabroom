@@ -1,0 +1,142 @@
+[
+  {
+    "id": "kobis",
+    "title": "오늘 박스오피스",
+    "url": "https://www.kobis.or.kr/kobis/business/stat/boxs/findDailyBoxOfficeList.do",
+    "description": "영화진흥위원회의 국내 일별 영화 순위와 관객 수.",
+    "keywords": "영화 순위 박스오피스 현재 흥행 예매율 관객 집계"
+  },
+  {
+    "id": "oscars",
+    "title": "아카데미 시상식",
+    "url": "https://www.oscars.org/oscars",
+    "description": "오스카상 후보와 수상작, 시상식 자료.",
+    "keywords": "영화 아카데미 시상식 오스카 수상 작품 후보"
+  },
+  {
+    "id": "megabox",
+    "title": "메가박스 영화",
+    "url": "https://www.megabox.co.kr/movie",
+    "description": "현재 상영작과 개봉 예정작의 영화 목록.",
+    "keywords": "영화 예매 상영작 영화관 메가 박스 개봉"
+  },
+  {
+    "id": "koreafilm",
+    "title": "한국영상자료원",
+    "url": "https://www.koreafilm.or.kr/main",
+    "description": "한국영화 아카이브와 시네마테크 상영 프로그램.",
+    "keywords": "영화 자료 옛날 한국 고전 영화 아카이브 기록"
+  },
+  {
+    "id": "tudum",
+    "title": "Netflix Tudum",
+    "url": "https://www.netflix.com/tudum",
+    "description": "넷플릭스 영화와 시리즈의 소식, 예고편, 작품 소개.",
+    "keywords": "넷플릭스 영화 추천 드라마 신작 예고편 스트리밍"
+  },
+  {
+    "id": "arte",
+    "title": "ARTE",
+    "url": "https://www.arte.tv/en/",
+    "description": "유럽 문화 채널의 다큐멘터리와 영화·공연.",
+    "keywords": "무료 다큐멘터리 유럽 영화 문화 공연 스트리밍"
+  },
+  {
+    "id": "ssg",
+    "title": "SSG.COM",
+    "url": "https://www.ssg.com/",
+    "description": "장보기와 식품, 생활용품 주문.",
+    "keywords": "쇼핑 장보기 식료품 마트 물품 구매 쓱배송"
+  },
+  {
+    "id": "costco",
+    "title": "코스트코 코리아",
+    "url": "https://www.costco.co.kr/",
+    "description": "식품, 생활용품 및 가전 구매.",
+    "keywords": "대용량 식료품 장보기 쇼핑 물품 마트 코스트코"
+  },
+  {
+    "id": "enuri",
+    "title": "에누리 가격비교",
+    "url": "https://www.enuri.com/",
+    "description": "가전과 생활용품의 쇼핑몰별 가격 비교.",
+    "keywords": "가전 최저가 가격 비교 물품 쇼핑"
+  },
+  {
+    "id": "ikea",
+    "title": "이케아 코리아",
+    "url": "https://www.ikea.com/kr/ko/",
+    "description": "가구, 수납용품, 조명과 집 꾸미기 제품.",
+    "keywords": "책상 의자 가구 쇼핑 인테리어 가정용품"
+  },
+  {
+    "id": "kurly",
+    "title": "컬리",
+    "url": "https://www.kurly.com/main",
+    "description": "신선식품, 장보기와 뷰티 제품 쇼핑.",
+    "keywords": "장보기 식료품 신선식품 쇼핑 마켓컬리 화장품 뷰티"
+  },
+  {
+    "id": "apple",
+    "title": "Apple Mac 구입",
+    "url": "https://www.apple.com/kr/shop/buy-mac",
+    "description": "MacBook과 Mac 제품 구성, 가격 및 구입.",
+    "keywords": "맥북 구매 애플 노트북 맥 컴퓨터 가격"
+  },
+  {
+    "id": "openai",
+    "title": "OpenAI API 문서",
+    "url": "https://developers.openai.com/api/docs",
+    "description": "OpenAI 모델, API, SDK의 공식 개발 문서.",
+    "keywords": "AI 기술 오픈에이아이 챗지피티 ChatGPT 개발 API 모델 문서"
+  },
+  {
+    "id": "claude",
+    "title": "Claude API 문서",
+    "url": "https://platform.claude.com/docs/en/home",
+    "description": "Claude 모델과 API의 공식 개발 문서.",
+    "keywords": "AI 기술 앤트로픽 클로드 Anthropic 개발 API 문서"
+  },
+  {
+    "id": "huggingface",
+    "title": "Hugging Face 모델",
+    "url": "https://huggingface.co/models",
+    "description": "다운로드하거나 시험할 수 있는 공개 머신러닝 모델.",
+    "keywords": "AI 기술 오픈소스 AI 모델 다운로드 허깅페이스 인공지능"
+  },
+  {
+    "id": "arxiv",
+    "title": "arXiv 인공지능 논문",
+    "url": "https://arxiv.org/list/cs.AI/recent",
+    "description": "arXiv 인공지능 분야의 최근 연구 논문.",
+    "keywords": "AI 최신 논문 인공지능 연구 머신러닝 아카이브"
+  },
+  {
+    "id": "pytorch",
+    "title": "PyTorch 공식 문서",
+    "url": "https://docs.pytorch.org/docs/stable/index.html",
+    "description": "텐서, 모델 학습 및 딥러닝 라이브러리 문서.",
+    "keywords": "AI 기술 파이토치 텐서 딥러닝 모델 학습 인공지능"
+  },
+  {
+    "id": "github",
+    "title": "GitHub Trending",
+    "url": "https://github.com/trending",
+    "description": "최근 GitHub에서 주목받는 오픈소스 저장소.",
+    "keywords": "깃허브 인기 프로젝트 코드 오픈소스 개발 트렌드"
+  },
+  {
+    "id": "mdn",
+    "title": "MDN 웹 문서",
+    "url": "https://developer.mozilla.org/ko/",
+    "description": "HTML, CSS, JavaScript 등 웹 개발 레퍼런스.",
+    "keywords": "개발 웹 기술 자바스크립트 HTML CSS 문서"
+  },
+  {
+    "id": "chrome",
+    "title": "Chrome 확장 문서",
+    "url": "https://developer.chrome.com/docs/extensions",
+    "description": "Chrome 확장의 권한과 API, 개발 가이드.",
+    "keywords": "크롬 익스텐션 브라우저 확장 프로그램 개발 문서"
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-10-28T17:13:33.949Z",
+  "server": {
+    "name": "aside",
+    "version": "1.26.1023.1115"
+  },
+  "documents": [
+    {
+      "file": "guide.md",
+      "command": "aside guide",
+      "bytes": 4452,
+      "sha256": "78acbb7a0b377fe2321c785ee5e3d578db52109e92fc5f0cc2375fdd568d6782"
+    },
+    {
+      "file": "guide-repl.md",
+      "command": "aside guide repl",
+      "bytes": 8345,
+      "sha256": "c325c40a0c312cd442916e1f24421d4bd207847c208f80916d03e3c72e0f142a"
+    }
+  ],
+  "mcpToolDefinitions": "live tools/list; unchanged descriptions and schemas"
+}

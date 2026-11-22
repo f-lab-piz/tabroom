@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "탭룸 · Tabroom",
+  "description": "열린 탭의 실시간 미리보기와 채팅용 탭 참조 선택",
+  "version": "0.6.24",
+  "minimum_chrome_version": "142",
+  "permissions": [
+    "tabs",
+    "debugger",
+    "sidePanel",
+    "storage",
+    "system.cpu",
+    "nativeMessaging",
+    "topSites",
+    "favicon",
+    "tabGroups",
+    "downloads"
+  ],
+  "optional_permissions": ["history"],
+  "options_page": "history-options.html",
+  "web_accessible_resources": [{
+    "resources": ["history-options.html"],
+    "matches": ["http://127.0.0.1/*"]
+  }],
+  "host_permissions": [
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "capture-worker.js",
+    "type": "module"
+  },
+  "side_panel": {
+    "default_path": "panel.html"
+  },
+  "action": {
+    "default_title": "탭룸 사이드 패널"
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsVSGBqo8lqVd10Z4TqwPBZucv8abdfDfNH2sg0XiqLnzNxRDfgasJ8E156kzQjQQdWjmpqso4tcnOL1ngDA/Qb3ipMeCcYPJH5X0WBRAaeJsOOpK/FnGHjCUozj//000EyOAR2Jr/0fjIoNSYJI9gB4EHjqXmA3n6DoLnoeuJGtE4bnmjiGm2+jVa9zzIKyKYgT9F+1povz3Ghg6PiyVqkhAPuQ/B62fV/kbli5hAiW4/NkLIG9WYkmA1Al8RzscHo2Bp2NIWkOj456fk/umJozhH2Ait31yeFZFe5yUS77MjFw2qqRnN8DAayzR7iwWhYKvbBBX/q/IvUcU7DojqwIDAQAB",
+  "externally_connectable": {
+    "matches": [
+      "http://127.0.0.1/*"
+    ]
+  }
+}

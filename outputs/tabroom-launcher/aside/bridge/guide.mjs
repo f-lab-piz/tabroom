@@ -1,0 +1,29 @@
+import fs from 'node:fs';
+const read=file=>fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+const reference=JSON.parse(read('docs/api-reference.json'));
+const documents={main:read('vendor/aside/guide.md'),repl:read('vendor/aside/guide-repl.md')};
+const aliases={Page:'page',AsidePage:'page',Locator:'locator',Frame:'frame',AsideFrame:'frame',FrameLocator:'frameLocator',Keyboard:'keyboard',AsideKeyboard:'keyboard',Mouse:'mouse',AsideMouse:'mouse',Download:'download',AsideDownload:'download',FileChooser:'fileChooser',ElementHandle:'elementHandle',Video:'video',AsideVideo:'video',Cua:'cua',PageConsole:'page.console'};
+const normalize=name=>name.replace(/^page\.(keyboard|mouse)\./,'$1.').replace(/^page\.video\(\)\./,'video.').replace(/^([^.]+)(?=\.|$)/,head=>Object.hasOwn(aliases,head)?aliases[head]:head);
+const entries=new Map(reference.entries.map(entry=>[entry.api,entry]));
+export const GUIDE_DESCRIPTION='Read browser usage and exact API contracts before unfamiliar REPL calls. No browser connection or JavaScript execution required. No arguments returns the original REPL guide verbatim. topic:main reads the original general guide; topic:api lists available calls; api selects one exact call such as page.setViewportSize, page.keyboard.press, locator.dragTo, or chrome.tabs.query. topic:scope explains this bridge and its limits. Original documents and separately authored source-derived contracts are labeled.';
+export const GUIDE_DEFINITION={name:'guide',description:GUIDE_DESCRIPTION,inputSchema:{type:'object',properties:{topic:{type:'string',enum:['repl','main','api','scope']},api:{type:'string',minLength:1,maxLength:160}},additionalProperties:false},annotations:{readOnlyHint:true,destructiveHint:false,idempotentHint:true,openWorldHint:false}};
+const scope=`Aside Browser Bridge — supported scope\n\nBrowser tools: browser_profiles, browser_repl, browser_guide. The browser engine is pinned to Aside daemon ${reference.sourceVersion} (${reference.sourceSha256}).\n\nThe bridge provides Page/Locator/frame/keyboard/mouse/download/file chooser/video/console, snapshot/ref/diff, scoped fs/path, cookie fetch, cua and the original allowed Chrome MV3 proxy. It does not provide Aside account/session agents, exec, memory_search, site-specific clients, password-manager or CAPTCHA services. Their mentions in verbatim original documents do not enable them.\n\nREPL: 120-second call limit, persistent bindings, console.log for output, no import/require. Each session has its own pwd/tmp/artifacts. Original guide reads require no installed Aside CLI when requested through browser_guide. Original skill copies describe the original Aside CLI and are preserved for provenance.\n\nFiles: fs/path stay within the session or exact completed download paths registered by download.path(). Uploads require --allow-uploads. Chrome history read/write requires --allow-history. Both are disabled by default.\n\nSnapshot refs must come from fresh snapshots. tabs/page are this REPL session's handles; openTab creates a background tab, and bringToFront selects a REPL page without guaranteeing a visible browser window.\n\nKnown PDF detail: original format/width/height options do not change paper size in the pinned implementation; see browser_guide({api:"page.pdf"}) for the verified paperWidth/paperHeight contract.
+\nUse browser_guide({topic:"api"}) for the callable index, or browser_guide({api:"locator.dragTo"}) for a signature, options, result and example. Additional contracts are authored from pinned source and selected runtime comparisons, not claimed as original guide text or exhaustive option-combination tests.`;
+const response=(text,metadata={},isError=false)=>({content:[{type:'text',text}],structuredContent:{...metadata},isError});
+export function getGuide({topic,api}={}){
+  if(api!==undefined&&(typeof api!=='string'||!api.trim()||api.length>160))return response('api must be a nonempty name of at most 160 characters. Use browser_guide({topic:"api"}).',{},true);
+  if(api!==undefined&&topic!==undefined&&topic!=='api')return response('Combine api only with topic:"api", or omit topic.',{},true);
+  topic??=api!==undefined?'api':'repl';
+  if(Object.hasOwn(documents,topic))return response(documents[topic],{topic,verbatim:true,source:'vendor/aside/guide'+(topic==='repl'?'-repl':'')+'.md'});
+  if(topic==='scope')return response(scope,{topic,authorship:'bridge-authored scope'});
+  if(topic!=='api')return response('Unknown guide topic. Available: repl, main, api, scope.',{},true);
+  if(api!==undefined){
+    const key=normalize(api.trim());const entry=entries.get(key)??(key.startsWith('elementHandle.')?entries.get(key.replace(/^elementHandle\./,'locator.')):undefined);
+    if(entry){const {signature,returns,description,notes,example,context,types={}}=entry;return response(`${entry.api}${signature==='property'||signature==='global binding'?' ('+signature+')':signature}\nReturns: ${returns}\n\n${description}\n\nContext: ${context}\n\nOptions and limits: ${notes||'No additional documented options.'}\n\nExample:\n${example}\n\n${Object.entries(types).map(([name,value])=>name+': '+value).join('\n')}`,{topic,entry});}
+    const children=reference.entries.filter(e=>e.api.startsWith(key+'.'));
+    if(children.length)return response(children.map(e=>e.api).join('\n'),{topic,apis:children.map(e=>e.api)});
+    const suggestions=reference.entries.map(e=>e.api).filter(name=>name.toLowerCase().includes(key.split('.').at(-1).toLowerCase())).slice(0,12);
+    return response(`API not documented: ${api}. Use browser_guide({topic:"api"}) for the index.${suggestions.length?'\nRelated: '+suggestions.join(', '):''}`,{topic,suggestions},true);
+  }
+  return response(reference.entries.map(e=>e.api).join('\n'),{topic,apis:reference.entries.map(e=>e.api),sourceVersion:reference.sourceVersion});
+}

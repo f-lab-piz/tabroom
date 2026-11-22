@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>탭룸 · 채팅</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="interactive-ui/styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body class="portal">
+  <nav class="sessions" id="sessions" aria-label="채팅 세션">
+    <header class="sessions-brand">
+      <button class="brand" id="session-home" type="button" aria-label="탭룸 홈" disabled><span class="brand-mark" aria-hidden="true"></span>탭룸</button>
+      <button id="sessions-close" class="icon-button sessions-close" type="button" aria-label="채팅 목록 닫기">×</button>
+    </header>
+    <button id="session-new" class="session-new" type="button" disabled>
+      <span aria-hidden="true">＋</span>새 채팅
+    </button>
+    <h2>내 채팅</h2>
+    <p id="sessions-status" class="sessions-status" role="status">채팅을 불러오는 중…</p>
+    <div id="session-list" class="session-list" aria-label="저장된 채팅"></div>
+    <div id="session-tabs-tooltip" popover="manual" role="tooltip"></div>
+  </nav>
+  <main class="chat">
+    <header class="topbar">
+      <div class="chat-heading">
+        <button id="sessions-open" class="button compact sessions-open" type="button"
+                aria-controls="sessions" aria-expanded="false">채팅 목록</button>
+        <span id="session-title">채팅</span>
+      </div>
+      <div class="top-actions">
+        <div class="context-meter" tabindex="0" aria-label="컨텍스트 사용량" aria-describedby="context-detail">
+          <span class="context-ring" aria-hidden="true"></span>
+          <span class="context-label">컨텍스트</span><span id="context-value">—</span>
+          <div id="context-detail" class="context-tooltip" role="tooltip">첫 답변부터 컨텍스트 사용량을 표시해요.</div>
+        </div>
+        <button class="button compact" type="button" id="open-panel">
+          <span class="panel-icon" aria-hidden="true"></span><span>사이드 패널</span>
+        </button>
+        <button class="button compact" type="button" id="settings" popovertarget="preferences">
+          <span aria-hidden="true" class="settings-icon">⚙</span><span>설정</span>
+        </button>
+        <section class="preferences" id="preferences" popover aria-labelledby="preferences-title">
+          <h2 id="preferences-title">미리보기 설정</h2>
+          <label class="fps-preference">프레임 형식 <select id="preview-format"><option value="jpeg">JPEG</option><option value="png">PNG</option></select></label>
+          <label class="fps-preference">해상도 <select id="preview-width"><option value="240">가볍게 · 240px</option><option value="320" selected>기본 · 320px</option><option value="480">선명하게 · 480px</option></select></label>
+          <label class="fps-preference">FPS 제한 <select id="preview-limit"><option value="tab">탭당 제한</option><option value="total">전체 합계 제한</option><option value="none">모든 탭 무제한</option><option value="auto">자동</option><option value="active">작업 중인 탭만 30fps</option></select></label>
+          <label class="fps-preference" id="fps-row">최대 FPS <input id="stream-fps" type="number" min="1" max="240" step="1" value="30" required></label>
+          <button class="button small" type="button" id="history-options">방문 기록 설정</button>
+          <a class="button small extension-download" href="/downloads/tabroom-extension.zip" download>Chrome 확장 다운로드</a>
+        </section>
+      </div>
+    </header>
+    <div id="mac-connect" hidden>
+      <button class="button primary" id="mac-connect-button" type="button">집 Mac Chrome에 연결</button>
+      <span id="mac-connect-status" role="status"></span>
+    </div>
+    <div class="chat-body">
+      <details class="cpu-box" open>
+        <summary class="cpu-summary">
+          <span>모니터링</span>
+          <span class="cpu-toggle" aria-hidden="true"><span>펼치기</span><span>접기</span></span>
+        </summary>
+        <div class="cpu-details">
+          <div class="monitor-stat"><span>PC 전체 CPU</span><output id="system-cpu" title="PC 전체 코어의 사용률">—</output></div>
+          <div class="monitor-stat"><span>미리보기 합계</span><output id="preview-fps" title="최근 2초간 미리보기에 실제로 표시한 속도 합계">0.0 FPS</output></div>
+          <div class="monitor-stage" id="auto-preview-stage" hidden></div>
+          <div class="cpu-heading"><strong>Chrome CPU</strong><output id="cpu-live">—</output></div>
+          <canvas id="cpu-chart" width="440" height="55" aria-label="최근 60초 CPU 추이"></canvas>
+          <div class="cpu-controls"><select id="cpu-duration" aria-label="측정 종료 방식"><option value="10">10초 자동 종료</option><option value="0">직접 중지</option></select><button class="button small" id="cpu-start">측정 시작</button></div>
+          <div id="cpu-progress" role="status">연결 중…</div>
+          <div id="cpu-results"></div>
+          <small>이 Chrome 전체 · 1코어 = 100%</small>
+        </div>
+      </details>
+      <section class="welcome" aria-labelledby="welcome-title">
+        <span class="welcome-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <h1 id="welcome-title">열린 탭으로 시작하세요</h1>
+        <div class="history-setup" id="remote-install" hidden>
+          <p>이 PC의 탭을 사용하려면 Chrome 확장을 설치하고 새로고침하세요.</p>
+          <a class="button small extension-download" href="/downloads/tabroom-extension.zip" download>Chrome 확장 다운로드</a>
+        </div>
+        <div class="history-setup" id="history-setup" hidden>
+          <iframe title="방문 기록 검색 켜기"></iframe>
+          <button class="button small" type="button" id="history-later">나중에</button>
+        </div>
+        <div class="welcome-start" id="welcome-start">
+          <section aria-labelledby="welcome-groups-title">
+            <h2 id="welcome-groups-title">저장된 탭그룹</h2>
+            <div id="welcome-groups"></div>
+          </section>
+          <section aria-labelledby="welcome-tasks-title">
+            <header><h2 id="welcome-tasks-title">자주 쓰는 작업</h2><button type="button" id="edit-tasks">편집</button></header>
+            <div id="welcome-tasks"></div>
+          </section>
+          <section aria-labelledby="welcome-sites-title">
+            <h2 id="welcome-sites-title">자주 방문하는 사이트</h2>
+            <div id="welcome-sites"></div>
+          </section>
+        </div>
+      </section>
+      <section id="messages" class="messages" aria-label="대화 기록" hidden></section>
+    </div>
+    <section class="composer-zone" aria-label="채팅 입력">
+      <div class="picker skill-picker" id="skill-picker" aria-label="스킬 목록" hidden></div>
+      <div class="picker" id="picker" hidden>
+        <div class="picker-kinds" id="picker-kinds" aria-label="참조 종류" hidden>
+          <button type="button" data-kind="current" aria-pressed="true">현재 탭</button>
+          <button type="button" data-kind="saved" aria-pressed="false">저장된 탭그룹</button>
+          <button type="button" data-kind="search" aria-pressed="false">검색</button>
+        </div>
+        <div class="picker-group-header" id="picker-group-header" hidden>
+          <div class="picker-group-names" id="picker-group-names" aria-label="저장된 탭그룹 이름"></div>
+          <button type="button" id="picker-group-next" hidden>다음 탭</button>
+        </div>
+        <div class="picker-tray" id="picker-tray"></div>
+        <div class="site-picker" id="site-picker" hidden>
+          <div class="site-results" role="group" aria-label="사이트 검색 결과" hidden></div>
+          <button type="button" class="site-result-preview" hidden>
+            <img alt="" hidden>
+            <span><strong></strong><small class="site-host"></small><small class="site-description" hidden></small></span>
+          </button>
+          <p class="search-status" role="status"></p>
+        </div>
+        <p class="picker-empty" id="picker-empty" hidden></p>
+        <div class="picker-help" id="picker-help">
+          <kbd>←</kbd> <kbd>→</kbd> 이동 <span>·</span> <kbd>Enter</kbd> 추가 <span>·</span> <kbd>Shift+Enter</kbd> 계속 추가
+        </div>
+        <div id="mobile-picker-controls" hidden>
+          <button class="button compact" type="button" data-picker-key="ArrowLeft" aria-label="이전">‹</button>
+          <button class="button compact" type="button" data-picker-key="Enter">추가</button>
+          <button class="button compact" type="button" data-picker-key="ArrowRight" aria-label="다음">›</button>
+        </div>
+      </div>
+      <div class="composer" id="composer">
+        <div class="composer-context">
+          <span id="group-status">탭 그룹 연결 전</span>
+        </div>
+        <div id="message" class="message-editor" contenteditable="true" role="textbox" aria-multiline="true"
+             aria-label="채팅 입력" aria-placeholder="메시지를 입력하세요"></div>
+        <div class="composer-actions">
+          <button class="mention-button" type="button" id="mention"><b>#</b> 탭 참조</button>
+          <button class="mention-button" type="button" id="mention-skill" aria-controls="skill-picker" aria-expanded="false"><b>/</b> 스킬</button>
+          <span id="agent-status" role="status"></span>
+          <button class="button small" id="stop" type="button" hidden>중지</button>
+          <button class="button primary" id="send" type="button" disabled><span class="send-label">보내기</span> <span aria-hidden="true">↑</span></button>
+        </div>
+      </div>
+      <p class="sr-only" id="announcement" aria-live="polite"></p>
+    </section>
+  </main>
+  <aside class="rail" id="rail" aria-label="채팅 탭 그룹 미리보기" hidden></aside>
+  <div id="tab-reference-preview" popover="manual" role="tooltip">
+    <div class="reference-preview-frame">
+      <img alt="탭 미리보기" hidden>
+      <span class="reference-preview-status">미리보기 없음</span>
+    </div>
+    <div class="reference-preview-detail" hidden>
+      <strong></strong><small></small>
+    </div>
+  </div>
+  <dialog class="group-dialog" id="task-editor" aria-labelledby="task-editor-title">
+    <header><h2 id="task-editor-title">자주 쓰는 작업</h2><form method="dialog"><button class="icon-button" aria-label="닫기">×</button></form></header>
+    <form id="task-editor-form">
+      <label for="task-select">작업</label><select id="task-select"></select>
+      <label for="task-title">이름</label><input id="task-title" maxlength="200" type="text" required>
+      <div id="task-prompt" class="message-editor task-prompt" contenteditable="true" role="textbox" aria-multiline="true"
+           aria-label="작업 문구" aria-placeholder="작업 문구"></div>
+      <div class="task-chip-controls">
+        <select id="task-bundle" aria-label="저장된 탭그룹"></select>
+        <button class="button small" type="button" id="add-task-chip">칩 넣기</button>
+      </div>
+      <p id="task-error" class="group-feedback" role="status"></p>
+      <button class="button primary" type="submit">저장</button>
+    </form>
+  </dialog>
+</body>
+</html>
